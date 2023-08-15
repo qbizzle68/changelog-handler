@@ -13,6 +13,11 @@ VERSION = r'(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)'
 SEMVAR = re.compile(rf'[Vv]?(?P<version>{VERSION})(-{PRE_RELEASE})?(\+{BUILD})?$')
 
 
+class InvalidSemanticVersion(Exception):
+    def __init__(self, *args):
+        super().__init__(*args)
+
+
 @total_ordering
 class SemanticVersion:
     __slots__ = '_major', '_minor', '_patch', '_preRelease', '_build'
@@ -23,7 +28,7 @@ class SemanticVersion:
 
         match = SEMVAR.fullmatch(version)
         if match is None:
-            raise ValueError('version string does not contain a valid sematic version')
+            raise InvalidSemanticVersion('version string does not contain a valid sematic version')
 
         results = match.groupdict(default='')
         self._major = int(results['major'])
@@ -31,6 +36,9 @@ class SemanticVersion:
         self._patch = int(results['patch'])
         self._preRelease = results['pre_release']
         self._build = results['build']
+        for p in self._preRelease.split('.'):
+            if p != '0' and p[0] == '0':
+                raise InvalidSemanticVersion('pre-release dot separated identifiers must not include leading zeros')
 
     def __str__(self) -> str:
         rtn = f'{self._major}.{self._minor}.{self._patch}'
