@@ -4,12 +4,13 @@ from functools import total_ordering
 
 __all__ = ['SemanticVersion']
 
-VERSION = r'(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)'
-IDENTIFIER = '[A-Za-z0-9-]'
+# regular expressions for checking semantic version guidelines
+IDENTIFIER = '[a-zA-Z0-9-]'
 DOTSEP_ID = rf'{IDENTIFIER}+(\.{IDENTIFIER}+)*'
 PRE_RELEASE = rf'(?P<pre_release>{DOTSEP_ID})'
 BUILD = rf'(?P<build>{DOTSEP_ID})'
-SEMVAR = rf'(?P<version>{VERSION})(-{PRE_RELEASE})?(\+{BUILD})?$'
+VERSION = r'(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)'
+SEMVAR = re.compile(rf'[Vv]?(?P<version>{VERSION})(-{PRE_RELEASE})?(\+{BUILD})?$')
 
 
 @total_ordering
@@ -20,7 +21,7 @@ class SemanticVersion:
         if not isinstance(version, str):
             raise TypeError('version must be a str type')
 
-        match = re.search(f'[Vv]?{SEMVAR}', version)
+        match = SEMVAR.fullmatch(version)
         if match is None:
             raise ValueError('version string does not contain a valid sematic version')
 
