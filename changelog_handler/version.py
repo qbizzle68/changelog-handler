@@ -37,7 +37,7 @@ class SemanticVersion:
         self._preRelease = results['pre_release']
         self._build = results['build']
         for p in self._preRelease.split('.'):
-            if p != '0' and p[0] == '0':
+            if p and p != '0' and p[0] == '0':
                 raise InvalidSemanticVersion('pre-release dot separated identifiers must not include leading zeros')
 
     def __str__(self) -> str:
