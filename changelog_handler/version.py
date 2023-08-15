@@ -2,7 +2,7 @@ import re
 
 from functools import total_ordering
 
-__all__ = ['SemanticVersion']
+__all__ = ['SemanticVersion', 'InvalidSemanticVersion']
 
 # regular expressions for checking semantic version guidelines
 IDENTIFIER = '[a-zA-Z0-9-]'
