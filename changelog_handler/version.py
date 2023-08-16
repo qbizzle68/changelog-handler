@@ -1,16 +1,7 @@
-import re
-
 from functools import total_ordering
+from changelog_handler._pattern import SEMVAR
 
-__all__ = ['SemanticVersion', 'InvalidSemanticVersion']
-
-# regular expressions for checking semantic version guidelines
-IDENTIFIER = '[a-zA-Z0-9-]'
-DOTSEP_ID = rf'{IDENTIFIER}+(\.{IDENTIFIER}+)*'
-PRE_RELEASE = rf'(?P<pre_release>{DOTSEP_ID})'
-BUILD = rf'(?P<build>{DOTSEP_ID})'
-VERSION = r'(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)'
-SEMVAR = re.compile(rf'[Vv]?(?P<version>{VERSION})(-{PRE_RELEASE})?(\+{BUILD})?$')
+__all__ = ['SemanticVersion', 'InvalidSemanticVersion', 'SEMVAR']
 
 
 class InvalidSemanticVersion(Exception):
