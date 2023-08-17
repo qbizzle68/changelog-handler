@@ -6,7 +6,7 @@ PRE_RELEASE = rf'(?P<pre_release>{DOTSEP_ID})'
 BUILD = rf'(?P<build>{DOTSEP_ID})'
 VERSION_CORE = rf'(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)'
 
-SEMVAR_RAW = rf'[Vv]?(?P<version>{VERSION_CORE})(?:-{PRE_RELEASE})?(?:\+{BUILD})?'
+SEMVAR_RAW = rf'[Vv]?(?P<version>{VERSION_CORE}(?:-{PRE_RELEASE})?(?:\+{BUILD})?)'
 
 SEMVAR = re.compile(f'{SEMVAR_RAW}$')
 DATE = r'(?P<date>\d{4}-\d{2}-\d{2})'
