@@ -1,7 +1,7 @@
 from functools import total_ordering
 from changelog_handler._pattern import SEMVAR
 
-__all__ = ['SemanticVersion', 'InvalidSemanticVersion', 'SEMVAR']
+__all__ = ['SemanticVersion', 'InvalidSemanticVersion', 'Unreleased']
 
 
 class InvalidSemanticVersion(Exception):
@@ -42,6 +42,9 @@ class SemanticVersion:
 
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}("{self.__str__()}")'
+
+    def __hash__(self):
+        return hash((self._major, self._minor, self._patch, self._preRelease, self._build))
 
     @property
     def version(self):
@@ -156,3 +159,24 @@ class SemanticVersion:
         """Return a dict with all parts of a semantic version."""
         return {'major': self._major, 'minor': self._minor, 'patch': self._patch,
                 'pre_release': self._preRelease, 'build_metadata': self._build}
+
+
+class UnreleasedType:
+    _instance = None
+
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+        return cls._instance
+
+    def __str__(self):
+        return 'Unreleased'
+
+    def __repr__(self):
+        return 'Unreleased'
+
+    def __hash__(self):
+        return hash('unreleased')
+
+
+Unreleased = UnreleasedType()
