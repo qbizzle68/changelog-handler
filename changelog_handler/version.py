@@ -189,5 +189,24 @@ class UnreleasedType(SemanticVersion):
     def __hash__(self):
         return hash('unreleased')
 
+    def __eq__(self, other: SemanticVersion):
+        if type(other) == SemanticVersion:
+            return False
+        elif other is Unreleased:
+            return True
+
+        return NotImplemented
+
+    def __lt__(self, other: SemanticVersion):
+        if type(other) == SemanticVersion:
+            return False
+        elif other is Unreleased:
+            return False
+
+        return NotImplemented
+
+    def toDict(self) -> dict:
+        return {}
+
 
 Unreleased = UnreleasedType()

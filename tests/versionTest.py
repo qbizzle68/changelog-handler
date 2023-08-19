@@ -1,7 +1,8 @@
 import unittest
 from copy import deepcopy
 
-from changelog_handler import SemanticVersion, InvalidSemanticVersion
+from changelog_handler import SemanticVersion, InvalidSemanticVersion, Unreleased
+
 
 class VersionTest(unittest.TestCase):
 
@@ -110,6 +111,14 @@ class VersionTest(unittest.TestCase):
         for v, c in zip(versions, copies):
             with self.subTest(version=v):
                 self.assertEqual(v, c)
+
+    def testUnreleased(self):
+        self.assertLess(SemanticVersion('1.0.0'), Unreleased)
+        self.assertNotEqual(SemanticVersion('1.2.3'), Unreleased)
+        self.assertEqual(Unreleased, Unreleased)
+        self.assertFalse(Unreleased < Unreleased)
+        self.assertEqual(Unreleased.toDict(), {})
+
 
 if __name__ == '__main__':
     unittest.main()
