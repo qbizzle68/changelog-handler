@@ -1,3 +1,4 @@
+import re
 from functools import total_ordering
 from changelog_handler._pattern import SEMVAR
 
@@ -13,9 +14,14 @@ class InvalidSemanticVersion(Exception):
 class SemanticVersion:
     __slots__ = '_major', '_minor', '_patch', '_preRelease', '_build'
 
-    def __init__(self, version: str):
+    def __new__(cls, version: str):
         if not isinstance(version, str):
             raise TypeError('version must be a str type')
+
+        if re.fullmatch('unreleased', version, re.IGNORECASE):
+            return Unreleased
+
+        self = object.__new__(cls)
 
         match = SEMVAR.fullmatch(version)
         if match is None:
@@ -31,6 +37,8 @@ class SemanticVersion:
             if p and p != '0' and p[0] == '0':
                 raise InvalidSemanticVersion('pre-release dot separated identifiers must not include leading zeros')
 
+        return self
+
     def __str__(self) -> str:
         rtn = f'{self._major}.{self._minor}.{self._patch}'
         if self._preRelease:
@@ -45,6 +53,9 @@ class SemanticVersion:
 
     def __hash__(self):
         return hash((self._major, self._minor, self._patch, self._preRelease, self._build))
+
+    def __reduce__(self):
+        return self.__class__, (self.__str__(),)
 
     @property
     def version(self):
@@ -161,12 +172,12 @@ class SemanticVersion:
                 'pre_release': self._preRelease, 'build_metadata': self._build}
 
 
-class UnreleasedType:
+class UnreleasedType(SemanticVersion):
     _instance = None
 
     def __new__(cls):
         if cls._instance is None:
-            cls._instance = super().__new__(cls)
+            cls._instance = object.__new__(cls)
         return cls._instance
 
     def __str__(self):
