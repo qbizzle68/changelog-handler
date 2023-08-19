@@ -14,3 +14,7 @@ URL = r'\s*\((?P<url>.+)\)'
 DELIMITER = re.compile(rf'##\s+(\[)?(?:(?P<unreleased>[Uu]nreleased)|{SEMVAR_RAW})(?(1)])(?:{URL})?\s+-\s+{DATE}')
 
 LINK = re.compile(rf'\[(?:(?P<unreleased>[Uu]nreleased)|{SEMVAR_RAW})]:\s+(?P<url>.+)')
+
+# regex for change tags
+TAGS = 'added|changed|deprecated|removed|fixed|security'
+CHANGE = rf'(?P<tag_literal>###\s+(?P<tag_name>{TAGS}).*?\n)(?P<content>.*?\n*)(?=##+|$)'
