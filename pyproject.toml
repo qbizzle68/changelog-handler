@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "changelog_handler"
+version = "0.1.0"
+authors = [
+    { name="Quinton Barnes", email="devqbizzle68@gmail.com" }
+]
+description = "A changelog parser for dumping release notes or handling version changes in scripts."
+readme = "README.md"
+license = { file = "LICENCE.txt"}
+requires-python = ">=3.8"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "License :: OSI Approved :: MIT License",
+    'Programming Language :: Python :: 3',
+    'Intended Audience :: Developers',
+    'Topic :: Software Development :: Version Control',
+]
+
+[project.urls]
+"Homepage" = "https://github.com/qbizzle68/changelog-handler"
+"Bug Tracker" = "https://github.com/qbizzle68/changelog-handler/issues"
